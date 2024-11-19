@@ -1045,7 +1045,7 @@ endif
 # add tuya iot lib compile support
 # -------------------------------------------------------------------
 # LIBFLAGS += -L $(TOP_DIR)/sdk/lib/ -ltuya_iot
-CFLAGS += -DUSER_SW_VER=\"$(USER_SW_VER)\" -DAPP_BIN_NAME=\"$(APP_BIN_NAME)\"
+CFLAGS += -DUSER_SW_VER=\"$(USER_SW_VER)\" -DAPP_BIN_NAME=\"$(APP_BIN_NAME)\" -DBUILD_NUMBER=$(BUILD_NUMBER)
 
 # -------------------------------------------------------------------
 # add tuya application components.mk

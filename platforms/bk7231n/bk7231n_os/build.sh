@@ -2,14 +2,16 @@
 APP_BIN_NAME=$1
 APP_VERSION=$2
 TARGET_PLATFORM=$3
-USER_CMD=$4
-BUILD_MODE=$5
+BUILD_NUMBER=$4
+USER_CMD=$5
+BUILD_MODE=$6
 
 echo APP_BIN_NAME=$APP_BIN_NAME
 echo APP_VERSION=$APP_VERSION
 echo TARGET_PLATFORM=$TARGET_PLATFORM
 echo USER_CMD=$USER_CMD
 echo BUILD_MODE=$BUILD_MODE
+echo BUILD_NUMBER=$BUILD_NUMBER
 
 USER_SW_VER=`echo $APP_VERSION | cut -d'-' -f1`
 
@@ -54,10 +56,10 @@ done
 if [ -z $CI_PACKAGE_PATH ]; then
     echo "not is ci build"
 else
-	make APP_BIN_NAME=$APP_BIN_NAME USER_SW_VER=$USER_SW_VER APP_VERSION=$APP_VERSION clean -C ./
+	make APP_BIN_NAME=$APP_BIN_NAME USER_SW_VER=$USER_SW_VER APP_VERSION=$APP_VERSION BUILD_NUMBER=$BUILD_NUMBER clean -C ./
 fi
 
-make APP_BIN_NAME=$APP_BIN_NAME USER_SW_VER=$USER_SW_VER APP_VERSION=$APP_VERSION $USER_CMD -j -C ./
+make APP_BIN_NAME=$APP_BIN_NAME USER_SW_VER=$USER_SW_VER APP_VERSION=$APP_VERSION $USER_CMD BUILD_NUMBER=$BUILD_NUMBER -j -C ./
 
 echo "Start Combined"
 cp ${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_${APP_VERSION}.bin tools/generate/
@@ -117,10 +119,10 @@ if [ "$BUILD_MODE" = "zerokeys" ]; then
 fi
 
 echo "$(pwd)"
-cp ${APP_BIN_NAME}_${APP_VERSION}.rbl ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_${APP_VERSION}.rbl
-cp ${APP_BIN_NAME}_UG_${APP_VERSION}.bin ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_UG_${APP_VERSION}.bin
-cp ${APP_BIN_NAME}_UA_${APP_VERSION}.bin ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_UA_${APP_VERSION}.bin
-cp ${APP_BIN_NAME}_QIO_${APP_VERSION}.bin ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_QIO_${APP_VERSION}.bin
+cp ${APP_BIN_NAME}_${APP_VERSION}.rbl ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_${APP_VERSION}_build${BUILD_NUMBER}.rbl
+cp ${APP_BIN_NAME}_UG_${APP_VERSION}.bin ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_UG_${APP_VERSION}_build${BUILD_NUMBER}.bin
+cp ${APP_BIN_NAME}_UA_${APP_VERSION}.bin ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_UA_${APP_VERSION}_build${BUILD_NUMBER}.bin
+cp ${APP_BIN_NAME}_QIO_${APP_VERSION}.bin ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_QIO_${APP_VERSION}_build${BUILD_NUMBER}.bin
 
 
 
@@ -141,7 +143,7 @@ cp ${APP_BIN_NAME}_UA_${APP_VERSION}.bin ../../${APP_PATH}/$APP_BIN_NAME/output/
 echo "*************************************************************************"
 echo "*************************************************************************"
 echo "*************************************************************************"
-echo "*********************${APP_BIN_NAME}_$APP_VERSION.bin********************"
+echo "*********************${APP_BIN_NAME}_${APP_VERSION}_build${BUILD_NUMBER}.bin********************"
 echo "*************************************************************************"
 echo "**********************COMPILE SUCCESS************************************"
 echo "*************************************************************************"
@@ -157,9 +159,9 @@ if [ -z $CI_PACKAGE_PATH ]; then
 else
 	mkdir -p ${CI_PACKAGE_PATH}
 
-   cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_UG_${APP_VERSION}.bin ${CI_PACKAGE_PATH}/$FW_NAME"_UG_"$APP_VERSION.bin
-   cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_UA_${APP_VERSION}.bin ${CI_PACKAGE_PATH}/$FW_NAME"_UA_"$APP_VERSION.bin
-   cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_QIO_${APP_VERSION}.bin ${CI_PACKAGE_PATH}/$FW_NAME"_QIO_"$APP_VERSION.bin
+   cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_UG_${APP_VERSION}_build${BUILD_NUMBER}.bin ${CI_PACKAGE_PATH}/$FW_NAME"_UG_"$APP_VERSION.bin
+   cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_UA_${APP_VERSION}_build${BUILD_NUMBER}.bin ${CI_PACKAGE_PATH}/$FW_NAME"_UA_"$APP_VERSION.bin
+   cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_QIO_${APP_VERSION}_build${BUILD_NUMBER}.bin ${CI_PACKAGE_PATH}/$FW_NAME"_QIO_"$APP_VERSION.bin
    cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_${APP_VERSION}.asm ${CI_PACKAGE_PATH}/$FW_NAME"_"$APP_VERSION.asm
    cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_${APP_VERSION}.axf ${CI_PACKAGE_PATH}/$FW_NAME"_"$APP_VERSION.axf
    cp ../../${APP_PATH}/$APP_BIN_NAME/output/$APP_VERSION/${APP_BIN_NAME}_${APP_VERSION}.map ${CI_PACKAGE_PATH}/$FW_NAME"_"$APP_VERSION.map
